@@ -1,19 +1,29 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx"; // create later if not present
+
 import StudentDashboard from "./pages/StudentDashboard.jsx";
 import AlumniDashboard from "./pages/AlumniDashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
-import StudentProfile from "./pages/StudentProfile.jsx";   // ✅ ADD THIS
+import StudentProfile from "./pages/StudentProfile.jsx";
+
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login */}
-        <Route path="/" element={<Login />} />
 
-        {/* Student Dashboard */}
+        {/* 🌐 Landing Page */}
+        <Route path="/" element={<Home />} />
+
+        {/* 🔐 Authentication */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* 🎓 Student Routes */}
         <Route
           path="/student"
           element={
@@ -23,7 +33,6 @@ function App() {
           }
         />
 
-        {/* Student Profile */}
         <Route
           path="/student/profile"
           element={
@@ -33,7 +42,7 @@ function App() {
           }
         />
 
-        {/* Alumni Dashboard */}
+        {/* 🧑‍🎓 Alumni Routes */}
         <Route
           path="/alumni"
           element={
@@ -43,7 +52,7 @@ function App() {
           }
         />
 
-        {/* Admin Dashboard */}
+        {/* 🛡 Admin Routes */}
         <Route
           path="/admin"
           element={
@@ -52,6 +61,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+
       </Routes>
     </BrowserRouter>
   );
