@@ -1,86 +1,147 @@
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 function AdminDashboard() {
+  const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
   };
 
-  return (
-    <div className="min-h-screen bg-slate-100">
+  if (!user) return null;
 
-      {/* Top Navbar */}
+  return (
+    <div className="min-h-screen bg-slate-100 relative overflow-hidden">
+
+      {/* Navbar */}
       <nav className="bg-white shadow px-8 py-4 flex justify-between items-center">
         <h2 className="text-xl font-bold text-indigo-700">
           🛠 Admin Dashboard
         </h2>
 
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-        >
-          Logout
-        </button>
+        <div className="flex items-center gap-6">
+
+          <span className="text-2xl">🔔</span>
+
+          {/* Profile Avatar */}
+          <div
+            className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center cursor-pointer font-semibold"
+            onClick={() => setShowProfile(true)}
+            title="Admin Profile"
+          >
+            {user.name.charAt(0).toUpperCase()}
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
       </nav>
 
-      {/* Main Content */}
-      <div className="max-w-6xl mx-auto p-8">
+      {/* Overlay */}
+      {showProfile && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setShowProfile(false)}
+        />
+      )}
 
-        {/* Profile Card */}
-        <div className="bg-white rounded-xl shadow p-6 mb-8">
-          <h3 className="text-lg font-semibold mb-4 text-gray-700">
-            Admin Information
+      {/* Profile Sidebar */}
+      <div
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300
+        ${showProfile ? "translate-x-0" : "translate-x-full"}`}
+      >
+
+        {/* Sidebar Header */}
+        <div className="flex justify-between items-center px-6 py-4 border-b">
+          <h3 className="text-lg font-semibold text-gray-700">
+            👤 Admin Profile
           </h3>
-
-          <div className="grid sm:grid-cols-3 gap-4 text-gray-600">
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Role:</strong> {user.role}</p>
-          </div>
+          <button
+            onClick={() => setShowProfile(false)}
+            className="text-gray-500 hover:text-gray-700 text-xl"
+          >
+            ✕
+          </button>
         </div>
 
-        {/* Admin Actions */}
-        <div className="grid md:grid-cols-4 gap-6">
-
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-            <h4 className="text-lg font-semibold mb-2">
-              👥 Manage Users
-            </h4>
-            <p className="text-gray-600 text-sm">
-              View, activate, deactivate, and manage all platform users.
-            </p>
+        {/* Profile Content */}
+        <div className="p-6 space-y-4 text-gray-700">
+          <div>
+            <p className="text-sm text-gray-500">Name</p>
+            <p className="font-medium">{user.name}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-            <h4 className="text-lg font-semibold mb-2">
-              ✅ Verify Alumni Profiles
-            </h4>
-            <p className="text-gray-600 text-sm">
-              Approve or reject alumni registrations and profile updates.
-            </p>
+          <div>
+            <p className="text-sm text-gray-500">Email</p>
+            <p className="font-medium">{user.email}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-            <h4 className="text-lg font-semibold mb-2">
-              📊 View Analytics
-            </h4>
-            <p className="text-gray-600 text-sm">
-              Monitor platform usage, engagement, and growth statistics.
-            </p>
+          <div>
+            <p className="text-sm text-gray-500">Role</p>
+            <p className="font-medium">{user.role}</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-            <h4 className="text-lg font-semibold mb-2">
-              🚫 Handle Reports
-            </h4>
-            <p className="text-gray-600 text-sm">
-              Review and resolve reported users or content issues.
-            </p>
-          </div>
+          <hr />
 
+          {/* Future actions */}
+          <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
+            Edit Profile (Future)
+          </button>
         </div>
+      </div>
+
+      {/* Dashboard Content */}
+      <div className="max-w-7xl mx-auto p-8 space-y-10">
+
+        <Section title="Platform Administration">
+          <AdminCard title="👥 Manage Users" desc="Activate, deactivate, manage users." />
+          <AdminCard title="✅ Verify Alumni" desc="Approve alumni profiles." />
+          <AdminCard title="🚫 Reports & Flags" desc="Handle reports and violations." />
+          <AdminCard title="📊 Analytics" desc="View platform statistics." />
+        </Section>
+
+        <Section title="Content & Activity Moderation">
+          <AdminCard title="💼 Internship Posts" desc="Moderate alumni postings." />
+          <AdminCard title="🤝 Mentorship Requests" desc="Monitor mentorship flow." />
+          <AdminCard title="📅 Events & Meetups" desc="Approve events." />
+        </Section>
+
+        <Section title="System Controls">
+          <AdminCard title="🔐 Role Management" desc="Manage permissions." />
+          <AdminCard title="📨 Announcements" desc="Publish announcements." />
+          <AdminCard title="⚙️ Settings" desc="Platform configuration." />
+        </Section>
 
       </div>
+    </div>
+  );
+}
+
+/* ---------- Helpers ---------- */
+
+function Section({ title, children }) {
+  return (
+    <section>
+      <h3 className="text-xl font-semibold mb-4 text-gray-700">{title}</h3>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+function AdminCard({ title, desc }) {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition cursor-pointer">
+      <h4 className="text-lg font-semibold mb-2">{title}</h4>
+      <p className="text-sm text-gray-600">{desc}</p>
     </div>
   );
 }

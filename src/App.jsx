@@ -8,6 +8,10 @@ import StudentDashboard from "./pages/StudentDashboard.jsx";
 import AlumniDashboard from "./pages/AlumniDashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import StudentProfile from "./pages/StudentProfile.jsx";
+import AlumniProfile from "./pages/AlumniProfile.jsx";
+import PostInternship from "./pages/PostInternship.jsx";
+
+
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
@@ -51,6 +55,26 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* Alumni Profile */}
+<Route
+  path="/alumni/profile"
+  element={
+    <ProtectedRoute allowedRole="ALUMNI">
+      <AlumniProfile />
+    </ProtectedRoute>
+  }
+/>
+
+{/* Post Internship - Alumni */}
+<Route
+  path="/alumni/post-internship"
+  element={
+    <ProtectedRoute allowedRole="ALUMNI">
+      <PostInternship />
+    </ProtectedRoute>
+  }
+/>
+
 
         {/* 🛡 Admin Routes */}
         <Route
@@ -61,6 +85,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* Post Internship - Admin */}
+<Route
+  path="/admin/post-internship"
+  element={
+    <ProtectedRoute allowedRole="ADMIN">
+      <PostInternship />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
     </BrowserRouter>
