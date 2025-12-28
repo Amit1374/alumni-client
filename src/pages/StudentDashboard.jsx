@@ -1,29 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import NotificationDropdown from "../components/NotificationDropdown";
 
 function StudentDashboard() {
   const navigate = useNavigate();
-  const notifRef = useRef();
 
   const [user, setUser] = useState(null);
   const [profileCompleted, setProfileCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const [showNotifications, setShowNotifications] = useState(false);
-
-  // 🔹 TEMP NOTIFICATIONS
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: "MENTORSHIP",
-      message: "Your mentorship request was accepted by Amit Patel"
-    },
-    {
-      id: 2,
-      type: "EVENT",
-      message: "Alumni Connect Meet scheduled this weekend"
-    }
-  ]);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -44,85 +28,29 @@ function StudentDashboard() {
       });
   }, []);
 
-  // 🔹 Close notification dropdown on outside click
-  useEffect(() => {
-    const handler = (e) => {
-      if (notifRef.current && !notifRef.current.contains(e.target)) {
-        setShowNotifications(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
-
-  const clearNotification = (id) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
-  };
-
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
   };
 
   if (loading || !user) return null;
+
   const disabled = !profileCompleted;
 
   return (
     <div className="min-h-screen bg-slate-100">
 
-      {/* NAVBAR */}
-      <nav className="bg-white shadow px-8 py-4 flex justify-between items-center relative">
+      {/* Navbar */}
+      <nav className="bg-white shadow px-8 py-4 flex justify-between items-center">
         <h2 className="text-xl font-bold text-indigo-700">
           🎓 Student Dashboard
         </h2>
 
         <div className="flex items-center gap-6">
+          {/* Notification */}
+         {user && <NotificationDropdown userId={user.id} />}
 
-          {/* 🔔 Notifications */}
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="relative"
-            >
-              <span className="text-2xl">🔔</span>
-              {notifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
-              )}
-            </button>
-
-            {showNotifications && (
-              <div className="absolute right-0 mt-3 w-80 bg-white shadow-xl rounded-lg border z-50">
-                <div className="px-4 py-2 border-b font-medium text-slate-700">
-                  Notifications
-                </div>
-
-                <div className="divide-y text-sm">
-                  {notifications.length === 0 && (
-                    <div className="px-4 py-3 text-slate-500">
-                      No new notifications
-                    </div>
-                  )}
-
-                  {notifications.map(n => (
-                    <div
-                      key={n.id}
-                      className="px-4 py-3 hover:bg-slate-50 flex justify-between items-start gap-3"
-                    >
-                      <p className="text-slate-700">{n.message}</p>
-                      <button
-                        onClick={() => clearNotification(n.id)}
-                        className="text-xs text-indigo-600 hover:underline"
-                      >
-                        Mark read
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Profile */}
+          {/* Profile Avatar */}
           <div
             className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center cursor-pointer font-semibold"
             onClick={() => navigate("/student/profile")}
@@ -139,33 +67,32 @@ function StudentDashboard() {
         </div>
       </nav>
 
-      {/* CONTENT */}
+      {/* Content */}
       <div className="max-w-7xl mx-auto p-8 space-y-10">
 
+        {/* Profile Warning */}
         {!profileCompleted && (
           <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded-lg">
             ⚠️ Complete your profile to unlock mentorship, internships, and events.
           </div>
         )}
 
-        {/* QUICK ACTIONS */}
+        {/* Quick Actions */}
         <section>
           <h3 className="text-xl font-semibold mb-4 text-gray-700">
-            Quick Actions
+            What would you like to do?
           </h3>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <ActionCard
-  title="🤝 Find a Mentor"
-  desc="Connect with alumni mentors."
-  disabled={disabled}
-  onClick={() => navigate("/student/mentorship")}
-/>
-
+              title="🤝 Find a Mentor"
+              desc="Search alumni and send mentorship requests."
+              disabled={disabled}
+            />
 
             <ActionCard
               title="🔍 Search Alumni"
-              desc="Explore alumni by company or role."
+              desc="Explore alumni by company, role, or skills."
               disabled={disabled}
             />
 
@@ -204,15 +131,25 @@ function StudentDashboard() {
           </div>
         </section>
 
-        {/* EVENTS */}
+        {/* Events Section */}
         <section>
           <h3 className="text-xl font-semibold mb-4 text-gray-700">
             📅 College Events & Meetups
           </h3>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <EventCard title="Alumni Connect Meet" desc="Networking with alumni." />
-            <EventCard title="Resume Workshop" desc="Hands-on resume building." />
-            <EventCard title="Tech Talk Series" desc="Career guidance sessions." />
+            <EventCard
+              title="Alumni Connect Meet"
+              desc="Networking session with alumni from top companies."
+            />
+            <EventCard
+              title="Resume Building Workshop"
+              desc="Hands-on workshop conducted by industry mentors."
+            />
+            <EventCard
+              title="Tech Talk Series"
+              desc="Sessions on modern technologies & career growth."
+            />
           </div>
         </section>
 
@@ -221,7 +158,7 @@ function StudentDashboard() {
   );
 }
 
-/* ---------- Components ---------- */
+/* ---------- Reusable Components ---------- */
 
 function ActionCard({ title, desc, disabled, onClick }) {
   return (
