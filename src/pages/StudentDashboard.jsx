@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import NotificationDropdown from "../components/NotificationDropdown";
 
 function StudentDashboard() {
   const navigate = useNavigate();
@@ -47,14 +48,7 @@ function StudentDashboard() {
 
         <div className="flex items-center gap-6">
           {/* Notification */}
-          <div className="relative">
-            <span className="text-2xl">🔔</span>
-            {!profileCompleted && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 rounded-full">
-                !
-              </span>
-            )}
-          </div>
+         {user && <NotificationDropdown userId={user.id} />}
 
           {/* Profile Avatar */}
           <div
