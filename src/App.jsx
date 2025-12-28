@@ -10,6 +10,7 @@ import AdminDashboard from "./pages/AdminDashboard.jsx";
 import StudentProfile from "./pages/StudentProfile.jsx";
 import AlumniProfile from "./pages/AlumniProfile.jsx";
 import PostInternship from "./pages/PostInternship.jsx";
+import FindMentor from "./pages/FindMentor.jsx";
 
 
 
@@ -42,6 +43,15 @@ function App() {
           element={
             <ProtectedRoute allowedRole="STUDENT">
               <StudentProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/student/find-mentor"
+          element={
+            <ProtectedRoute allowedRole="STUDENT">
+              <FindMentor />
             </ProtectedRoute>
           }
         />

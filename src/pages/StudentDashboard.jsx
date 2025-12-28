@@ -88,6 +88,7 @@ function StudentDashboard() {
               title="🤝 Find a Mentor"
               desc="Search alumni and send mentorship requests."
               disabled={disabled}
+              onClick={() => navigate("/student/find-mentor")}
             />
 
             <ActionCard
