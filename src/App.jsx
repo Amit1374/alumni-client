@@ -4,6 +4,9 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx"; // create later if not present
 
+
+import StudentInternships from "./pages/StudentInternships";
+
 import StudentDashboard from "./pages/StudentDashboard.jsx";
 import AlumniDashboard from "./pages/AlumniDashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
@@ -105,6 +108,18 @@ function App() {
     </ProtectedRoute>
   }
 />
+
+<Route
+  path="/student/internships"
+  element={
+    <ProtectedRoute allowedRole="STUDENT">
+      <StudentInternships />
+    </ProtectedRoute>
+  }
+/>
+
+
+
 
       </Routes>
     </BrowserRouter>

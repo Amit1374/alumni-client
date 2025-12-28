@@ -105,43 +105,29 @@ function StudentDashboard() {
           </div>
         </section>
 
-        {/* Internship Section */}
+        {/* 💼 INTERNSHIPS */}
         <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
-            💼 Internship Opportunities
-          </h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-semibold text-gray-700">
+              💼 Internship Opportunities
+            </h3>
 
-          <div className="bg-white rounded-xl shadow p-6 space-y-4">
+            <button
+              disabled={disabled}
+              onClick={() => navigate("/student/internships")}
+              className="text-sm text-indigo-600 hover:underline disabled:text-gray-400"
+            >
+              View all →
+            </button>
+          </div>
 
-            {/* Filters (UI only) */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <input
-                placeholder="Search by skill (React, Java...)"
-                className="border rounded-lg px-4 py-2"
-                disabled={disabled}
-              />
-              <select className="border rounded-lg px-4 py-2" disabled={disabled}>
-                <option>Mode</option>
-                <option>Online</option>
-                <option>Offline</option>
-                <option>Hybrid</option>
-              </select>
-              <select className="border rounded-lg px-4 py-2" disabled={disabled}>
-                <option>Experience</option>
-                <option>Fresher</option>
-                <option>0-1 Year</option>
-                <option>1-3 Years</option>
-              </select>
-              <button
-                disabled={disabled}
-                className="bg-indigo-600 text-white rounded-lg px-4 py-2 hover:bg-indigo-700 disabled:bg-gray-300"
-              >
-                Search
-              </button>
-            </div>
-
-            <p className="text-gray-500 text-sm">
-              Internships posted by alumni will appear here.
+          <div
+            onClick={() => !disabled && navigate("/student/internships")}
+            className={`bg-white rounded-xl shadow p-6 cursor-pointer transition
+              ${disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-lg"}`}
+          >
+            <p className="text-gray-600">
+              Browse internships and job opportunities posted by alumni and admins.
             </p>
           </div>
         </section>
