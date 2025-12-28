@@ -16,7 +16,7 @@ function AdminDashboard() {
   return (
     <div className="min-h-screen bg-slate-100 relative overflow-hidden">
 
-      {/* Navbar */}
+      {/* NAVBAR */}
       <nav className="bg-white shadow px-8 py-4 flex justify-between items-center">
         <h2 className="text-xl font-bold text-indigo-700">
           🛠 Admin Dashboard
@@ -24,7 +24,8 @@ function AdminDashboard() {
 
         <div className="flex items-center gap-6">
 
-          <span className="text-2xl">🔔</span>
+          {/* Notification (future-ready) */}
+          <span className="text-xl">🔔</span>
 
           {/* Profile Avatar */}
           <div
@@ -37,7 +38,7 @@ function AdminDashboard() {
 
           <button
             onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            className="text-sm text-red-600 hover:underline"
           >
             Logout
           </button>
@@ -52,26 +53,23 @@ function AdminDashboard() {
         />
       )}
 
-      {/* Profile Sidebar */}
+      {/* PROFILE SIDEBAR */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300
         ${showProfile ? "translate-x-0" : "translate-x-full"}`}
       >
-
-        {/* Sidebar Header */}
         <div className="flex justify-between items-center px-6 py-4 border-b">
           <h3 className="text-lg font-semibold text-gray-700">
             👤 Admin Profile
           </h3>
           <button
             onClick={() => setShowProfile(false)}
-            className="text-gray-500 hover:text-gray-700 text-xl"
+            className="text-gray-500 text-xl"
           >
             ✕
           </button>
         </div>
 
-        {/* Profile Content */}
         <div className="p-6 space-y-4 text-gray-700">
           <div>
             <p className="text-sm text-gray-500">Name</p>
@@ -87,19 +85,13 @@ function AdminDashboard() {
             <p className="text-sm text-gray-500">Role</p>
             <p className="font-medium">{user.role}</p>
           </div>
-
-          <hr />
-
-          {/* Future actions */}
-          <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
-            Edit Profile (Future)
-          </button>
         </div>
       </div>
 
-      {/* Dashboard Content */}
-      <div className="max-w-7xl mx-auto p-8 space-y-10">
+      {/* DASHBOARD CONTENT */}
+      <div className="max-w-7xl mx-auto p-8 space-y-12">
 
+        {/* SECTION 1 */}
         <Section title="Platform Administration">
           <AdminCard title="👥 Manage Users" desc="Activate, deactivate, manage users." />
           <AdminCard title="✅ Verify Alumni" desc="Approve alumni profiles." />
@@ -107,12 +99,18 @@ function AdminDashboard() {
           <AdminCard title="📊 Analytics" desc="View platform statistics." />
         </Section>
 
+        {/* SECTION 2 */}
         <Section title="Content & Activity Moderation">
-          <AdminCard title="💼 Internship Posts" desc="Moderate alumni postings." />
+          <AdminCard
+            title="💼 Post Internships"
+            desc="Create internship or job postings for students."
+            onClick={() => navigate("/admin/post-internship")}
+          />
           <AdminCard title="🤝 Mentorship Requests" desc="Monitor mentorship flow." />
-          <AdminCard title="📅 Events & Meetups" desc="Approve events." />
+          <AdminCard title="📅 Events & Meetups" desc="Approve alumni events." />
         </Section>
 
+        {/* SECTION 3 */}
         <Section title="System Controls">
           <AdminCard title="🔐 Role Management" desc="Manage permissions." />
           <AdminCard title="📨 Announcements" desc="Publish announcements." />
@@ -124,7 +122,7 @@ function AdminDashboard() {
   );
 }
 
-/* ---------- Helpers ---------- */
+/* ---------- HELPERS ---------- */
 
 function Section({ title, children }) {
   return (
@@ -137,9 +135,13 @@ function Section({ title, children }) {
   );
 }
 
-function AdminCard({ title, desc }) {
+function AdminCard({ title, desc, onClick }) {
   return (
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition cursor-pointer">
+    <div
+      onClick={onClick}
+      className={`bg-white p-6 rounded-xl shadow hover:shadow-lg transition
+        ${onClick ? "cursor-pointer" : ""}`}
+    >
       <h4 className="text-lg font-semibold mb-2">{title}</h4>
       <p className="text-sm text-gray-600">{desc}</p>
     </div>

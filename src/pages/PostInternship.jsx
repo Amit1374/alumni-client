@@ -10,7 +10,6 @@ function PostInternship() {
     company: "",
     type: "",
     duration: "",
-    experience: "",
     skills: "",
     location: "",
     stipend: "",
@@ -24,12 +23,12 @@ function PostInternship() {
   const validate = () => {
     const newErrors = {};
 
-    if (!form.title) newErrors.title = "Title is required";
-    if (!form.company) newErrors.company = "Company is required";
+    if (!form.title.trim()) newErrors.title = "Title is required";
+    if (!form.company.trim()) newErrors.company = "Company is required";
     if (!form.type) newErrors.type = "Internship type is required";
     if (!form.duration) newErrors.duration = "Duration is required";
-    if (!form.skills) newErrors.skills = "Skills are required";
-    if (!form.description) newErrors.description = "Description is required";
+    if (!form.skills.trim()) newErrors.skills = "Skills are required";
+    if (!form.description.trim()) newErrors.description = "Description is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -39,26 +38,41 @@ function PostInternship() {
   const handleSubmit = async () => {
     if (!validate()) return;
 
-    // 🔹 BACKEND CALL (enable later)
-    /*
-    await fetch("http://localhost:8080/api/internships", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        postedBy: user.id,
-        role: user.role
-      })
-    });
-    */
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/internships/${user.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title: form.title,
+            companyName: form.company,
+            description: form.description,
+            skills: form.skills,
+            mode: form.type,                // Remote / Onsite / Hybrid
+            durationInMonths: Number(form.duration),
+            paid: form.stipend ? true : false
+          })
+        }
+      );
 
-    alert("Internship posted successfully ✅");
-    navigate(user.role === "ADMIN" ? "/admin" : "/alumni");
+      if (!response.ok) {
+        throw new Error("Failed to post internship");
+      }
+
+      alert("✅ Internship posted successfully");
+      navigate(user.role === "ADMIN" ? "/admin" : "/alumni");
+
+    } catch (error) {
+      console.error(error);
+      alert("❌ Error posting internship");
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-10">
-
       <div className="bg-white w-full max-w-3xl rounded-xl shadow p-8">
 
         <h2 className="text-2xl font-bold text-indigo-700 mb-2">
@@ -95,23 +109,23 @@ function PostInternship() {
           />
 
           <Input
-            label="Duration (e.g. 3 Months)"
+            label="Duration (Months)"
             value={form.duration}
             onChange={v => setForm({ ...form, duration: v })}
             error={errors.duration}
-          />
-
-          <Select
-            label="Experience Level"
-            value={form.experience}
-            onChange={v => setForm({ ...form, experience: v })}
-            options={["Fresher", "0-1 Year", "1-2 Years"]}
+            placeholder="3"
           />
 
           <Input
-            label="Location"
+            label="Location (Optional)"
             value={form.location}
             onChange={v => setForm({ ...form, location: v })}
+          />
+
+          <Input
+            label="Stipend / Salary (Optional)"
+            value={form.stipend}
+            onChange={v => setForm({ ...form, stipend: v })}
           />
 
         </div>
@@ -124,12 +138,6 @@ function PostInternship() {
           placeholder="React, Java, SQL"
         />
 
-        <Input
-          label="Stipend / Salary (Optional)"
-          value={form.stipend}
-          onChange={v => setForm({ ...form, stipend: v })}
-        />
-
         <Textarea
           label="Internship Description"
           value={form.description}
@@ -138,7 +146,7 @@ function PostInternship() {
         />
 
         <Input
-          label="Apply Link / Email"
+          label="Apply Link / Email (Optional)"
           value={form.applyLink}
           onChange={v => setForm({ ...form, applyLink: v })}
         />
