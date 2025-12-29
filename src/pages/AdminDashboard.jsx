@@ -25,7 +25,7 @@ function AdminDashboard() {
         <div className="flex items-center gap-6">
 
           {/* Notification (future-ready) */}
-          <span className="text-xl">🔔</span>
+         
 
           {/* Profile Avatar */}
           <div
@@ -35,6 +35,7 @@ function AdminDashboard() {
           >
             {user.name.charAt(0).toUpperCase()}
           </div>
+          
 
           <button
             onClick={handleLogout}

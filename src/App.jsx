@@ -14,7 +14,7 @@ import StudentProfile from "./pages/StudentProfile.jsx";
 import AlumniProfile from "./pages/AlumniProfile.jsx";
 import PostInternship from "./pages/PostInternship.jsx";
 import FindMentor from "./pages/FindMentor.jsx";
-
+import AlumniMentorshipPage from "./pages/AlumniMentorshipPage.jsx";
 
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -68,26 +68,34 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         {/* Alumni Profile */}
-<Route
-  path="/alumni/profile"
-  element={
-    <ProtectedRoute allowedRole="ALUMNI">
-      <AlumniProfile />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/alumni/profile"
+          element={
+            <ProtectedRoute allowedRole="ALUMNI">
+              <AlumniProfile />
+            </ProtectedRoute>
+          }
+        />
 
-{/* Post Internship - Alumni */}
-<Route
-  path="/alumni/post-internship"
-  element={
-    <ProtectedRoute allowedRole="ALUMNI">
-      <PostInternship />
-    </ProtectedRoute>
-  }
-/>
-
+        {/* Post Internship - Alumni */}
+        <Route
+          path="/alumni/post-internship"
+          element={
+            <ProtectedRoute allowedRole="ALUMNI">
+              <PostInternship />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/alumni/mentorship-requests"
+          element={
+            <ProtectedRoute allowedRole="ALUMNI">
+            <AlumniMentorshipPage />
+            </ProtectedRoute>
+          }
+        />
 
         {/* 🛡 Admin Routes */}
         <Route
@@ -100,27 +108,23 @@ function App() {
         />
 
         {/* Post Internship - Admin */}
-<Route
-  path="/admin/post-internship"
-  element={
-    <ProtectedRoute allowedRole="ADMIN">
-      <PostInternship />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/admin/post-internship"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <PostInternship />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/student/internships"
-  element={
-    <ProtectedRoute allowedRole="STUDENT">
-      <StudentInternships />
-    </ProtectedRoute>
-  }
-/>
-
-
-
-
+        <Route
+          path="/student/internships"
+          element={
+            <ProtectedRoute allowedRole="STUDENT">
+              <StudentInternships />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

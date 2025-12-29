@@ -33,53 +33,65 @@ function StudentDashboard() {
     window.location.href = "/";
   };
 
-  if (loading || !user) return null;
+  if (loading || !user) return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+    </div>
+  );
 
   const disabled = !profileCompleted;
 
   return (
-    <div className="min-h-screen bg-slate-100">
-
-      {/* Navbar */}
-      <nav className="bg-white shadow px-8 py-4 flex justify-between items-center">
-        <h2 className="text-xl font-bold text-indigo-700">
-          🎓 Student Dashboard
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900">
+      
+      {/* --- Upgraded Navbar --- */}
+      <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-slate-200 px-8 py-4 flex justify-between items-center">
+        <h2 className="text-xl font-bold text-indigo-700 flex items-center gap-2">
+          <span>🎓</span> Student Dashboard
         </h2>
 
         <div className="flex items-center gap-6">
-          {/* Notification */}
-         {user && <NotificationDropdown userId={user.id} />}
-
-          {/* Profile Avatar */}
-          <div
-            className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center cursor-pointer font-semibold"
-            onClick={() => navigate("/student/profile")}
-          >
-            {user.name.charAt(0).toUpperCase()}
+          {/* Notification Container - Set to relative so dropdown aligns below icon */}
+          <div className="relative">
+             {user && <NotificationDropdown userId={user.id} />}
           </div>
+
+         {/* Profile Avatar */}
+            <div
+              className="w-10 h-10 rounded-full bg-indigo-50 border-2 border-indigo-200 text-indigo-700 flex items-center justify-center cursor-pointer font-bold hover:bg-indigo-100 transition-all shadow-sm"
+              onClick={() => navigate("/student/profile")}
+              title="View Profile"
+            >
+              {user.name.charAt(0).toUpperCase()}
+            </div>
 
           <button
             onClick={handleLogout}
-            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+            className="group flex items-center gap-2 bg-white text-red-500 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-medium"
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
             Logout
           </button>
         </div>
       </nav>
 
-      {/* Content */}
+      {/* --- Main Content --- */}
       <div className="max-w-7xl mx-auto p-8 space-y-10">
 
         {/* Profile Warning */}
         {!profileCompleted && (
-          <div className="bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded-lg">
-            ⚠️ Complete your profile to unlock mentorship, internships, and events.
+          <div className="flex items-center gap-3 bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl shadow-sm">
+            <span className="text-xl">⚠️</span>
+            <p className="font-medium">Complete your profile to unlock mentorship, internships, and events.</p>
           </div>
         )}
 
         {/* Quick Actions */}
         <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+          <h3 className="text-lg font-bold mb-5 text-slate-700 flex items-center gap-2">
+            <span className="w-1 h-6 bg-indigo-600 rounded-full"></span>
             What would you like to do?
           </h3>
 
@@ -105,17 +117,18 @@ function StudentDashboard() {
           </div>
         </section>
 
-        {/* 💼 INTERNSHIPS */}
+        {/* Internship Opportunities */}
         <section>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-semibold text-gray-700">
+          <div className="flex justify-between items-center mb-5">
+            <h3 className="text-lg font-bold text-slate-700 flex items-center gap-2">
+              <span className="w-1 h-6 bg-indigo-600 rounded-full"></span>
               💼 Internship Opportunities
             </h3>
 
             <button
               disabled={disabled}
               onClick={() => navigate("/student/internships")}
-              className="text-sm text-indigo-600 hover:underline disabled:text-gray-400"
+              className="text-sm font-bold text-indigo-600 hover:text-indigo-800 disabled:text-gray-400 transition-colors"
             >
               View all →
             </button>
@@ -123,18 +136,19 @@ function StudentDashboard() {
 
           <div
             onClick={() => !disabled && navigate("/student/internships")}
-            className={`bg-white rounded-xl shadow p-6 cursor-pointer transition
-              ${disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-lg"}`}
+            className={`bg-white border border-slate-200 rounded-2xl p-8 transition-all
+              ${disabled ? "opacity-60 cursor-not-allowed" : "hover:border-indigo-300 hover:shadow-xl hover:shadow-indigo-500/5 cursor-pointer"}`}
           >
-            <p className="text-gray-600">
+            <p className="text-slate-600 text-lg">
               Browse internships and job opportunities posted by alumni and admins.
             </p>
           </div>
         </section>
 
         {/* Events Section */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4 text-gray-700">
+        <section className="pb-12">
+          <h3 className="text-lg font-bold mb-5 text-slate-700 flex items-center gap-2">
+            <span className="w-1 h-6 bg-indigo-600 rounded-full"></span>
             📅 College Events & Meetups
           </h3>
 
@@ -165,23 +179,24 @@ function ActionCard({ title, desc, disabled, onClick }) {
   return (
     <div
       onClick={!disabled ? onClick : undefined}
-      className={`p-6 rounded-xl shadow transition
+      className={`p-6 rounded-2xl border transition-all duration-300
         ${disabled
-          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-          : "bg-white hover:shadow-lg cursor-pointer"
+          ? "bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed"
+          : "bg-white border-slate-200 hover:border-indigo-400 hover:shadow-lg hover:-translate-y-1 cursor-pointer"
         }`}
     >
-      <h4 className="text-lg font-semibold mb-2">{title}</h4>
-      <p className="text-sm">{desc}</p>
+      <h4 className="text-lg font-bold mb-2">{title}</h4>
+      <p className="text-sm text-slate-500">{desc}</p>
     </div>
   );
 }
 
 function EventCard({ title, desc }) {
   return (
-    <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-      <h4 className="text-lg font-semibold mb-2">{title}</h4>
-      <p className="text-sm text-gray-600">{desc}</p>
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-md transition-all">
+      <h4 className="text-lg font-bold mb-2 text-slate-800">{title}</h4>
+      <p className="text-sm text-slate-600 leading-relaxed">{desc}</p>
+      <button className="mt-4 text-xs font-bold text-indigo-600 uppercase tracking-wider hover:text-indigo-800">Learn More</button>
     </div>
   );
 }

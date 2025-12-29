@@ -1,5 +1,15 @@
 import { useEffect, useState } from "react";
-import EventModal from "./EventModal"; // 👈 Import the new modal
+import EventModal from "./EventModal"; 
+import {
+  Bell,
+  CalendarPlus,
+  Calendar,
+  MapPin,
+  Clock,
+  ArrowRight,
+  CheckCheck
+} from "lucide-react";
+
 
 function NotificationDropdown({ userId }) {
   const [notifications, setNotifications] = useState([]);
@@ -61,7 +71,7 @@ function NotificationDropdown({ userId }) {
           onClick={() => setIsOpen(!isOpen)}
           className="relative p-2 hover:bg-gray-100 rounded-full transition"
         >
-          <span className="text-2xl">🔔</span>
+          <span className="text-2xl"><Bell className="w-6 h-6 text-gray-700" /></span>
           {unreadCount > 0 && (
             <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">
               {unreadCount}
@@ -98,14 +108,15 @@ function NotificationDropdown({ userId }) {
                       {notif.event ? (
                         <div>
                           <p className="text-sm font-semibold text-indigo-700 mb-1">
-                            📅 {notif.message}
+                            <Calendar size={14} className="text-gray-500" /> {notif.message}
                           </p>
                           <div className="bg-white border rounded-lg p-3 shadow-sm">
                             <p className="text-gray-800 font-medium text-sm">
                               {notif.event.eventName}
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
-                              📍 {notif.event.eventLocation} • 🕒 {formatDate(notif.event.eventDateTime)}
+                              <MapPin size={14} className="text-gray-500" /> {notif.event.eventLocation}
+                              <Clock size={14} className="text-gray-500" /> {formatDate(notif.event.eventDateTime)}
                             </p>
                             
                             {/* 🆕 Button now passes the whole event object */}

@@ -46,7 +46,7 @@ function AlumniProfile() {
         setIsEditMode(true);
         setLoading(false);
       });
-  }, [user.id]);
+  }, [user?.id]);
 
   /* ✅ VALIDATION */
   const validateForm = () => {
