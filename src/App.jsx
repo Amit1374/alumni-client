@@ -15,6 +15,7 @@ import AlumniProfile from "./pages/AlumniProfile.jsx";
 import PostInternship from "./pages/PostInternship.jsx";
 import FindMentor from "./pages/FindMentor.jsx";
 import AlumniMentorshipPage from "./pages/AlumniMentorshipPage.jsx";
+import CreateEvent from "./pages/CreateEvent.jsx";
 
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
@@ -113,6 +114,15 @@ function App() {
           element={
             <ProtectedRoute allowedRole="ADMIN">
               <PostInternship />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/create-event"
+          element={
+            <ProtectedRoute allowedRole="ADMIN">
+              <CreateEvent />
             </ProtectedRoute>
           }
         />

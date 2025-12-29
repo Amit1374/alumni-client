@@ -6,6 +6,7 @@ import {
   Briefcase, MessageSquare, Calendar, ShieldCheck, 
   Megaphone, Settings, X, LogOut, User as UserIcon
 } from "lucide-react";
+import CreateEvent from "./CreateEvent";
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -36,6 +37,18 @@ function AdminDashboard() {
         </motion.h2>
 
         <div className="flex items-center gap-4">
+          
+          {/* Announce Button - Now inside the flex container */}
+          <button 
+                onClick={() => navigate('/admin/create-event')}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 rounded-lg transition-all text-sm font-bold active:scale-95"
+                title="Post a new announcement"
+          >
+                <Megaphone size={16} />
+                <span className="hidden sm:inline">Announce</span>
+          </button>
+
+          {/* Profile Icon */}
           <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -45,7 +58,7 @@ function AdminDashboard() {
             {user.name.charAt(0).toUpperCase()}
           </motion.div>
           
-          
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="group flex items-center gap-2 bg-white text-red-500 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-all duration-200 font-medium"
@@ -136,7 +149,12 @@ function AdminDashboard() {
         </Section>
 
         <Section title="System Controls">
-          <AdminCard title="Announcements" desc="Send global notifications to all users." icon={<Megaphone />} />
+          <AdminCard 
+            title="Announcements" 
+            desc="Send global notifications to all users." 
+            icon={<Megaphone />}
+            onClick={() => navigate('/admin/create-event')}
+          />
           <AdminCard title="Settings" desc="Configure platform rules and API keys." icon={<Settings />} />
         </Section>
       </main>
