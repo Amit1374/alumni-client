@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 function StudentInternships() {
   const [internships, setInternships] = useState([]);
@@ -43,32 +44,39 @@ function StudentInternships() {
   }, [search, mode, paid, internships]);
 
   return (
-    <div className="min-h-screen bg-slate-100 px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 px-6 py-12">
 
       {/* HEADER */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <h2 className="text-2xl font-bold text-slate-800">
-          💼 Internship Opportunities
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-6xl mx-auto mb-10"
+      >
+        <h2 className="text-3xl font-bold text-slate-800">
+          Internship Opportunities
         </h2>
-        <p className="text-sm text-slate-500">
-          Explore internships shared by alumni & admin
+        <p className="text-slate-500 mt-1">
+          Discover internships shared by alumni and administrators
         </p>
-      </div>
+      </motion.div>
 
       {/* FILTER BAR */}
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow p-4 mb-8 grid md:grid-cols-4 gap-4">
-
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-6xl mx-auto bg-white/80 backdrop-blur-lg rounded-2xl shadow-md border border-gray-200 p-5 mb-10 grid md:grid-cols-4 gap-4"
+      >
         <input
-          placeholder="Search by title, company or skills"
+          placeholder="Search title, company or skills"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="px-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none"
         />
 
         <select
           value={mode}
           onChange={e => setMode(e.target.value)}
-          className="px-4 py-2 border rounded-lg"
+          className="px-4 py-2.5 rounded-xl border border-gray-300"
         >
           <option value="">All Modes</option>
           <option value="Remote">Remote</option>
@@ -79,7 +87,7 @@ function StudentInternships() {
         <select
           value={paid}
           onChange={e => setPaid(e.target.value)}
-          className="px-4 py-2 border rounded-lg"
+          className="px-4 py-2.5 rounded-xl border border-gray-300"
         >
           <option value="">Paid / Unpaid</option>
           <option value="true">Paid</option>
@@ -92,17 +100,17 @@ function StudentInternships() {
             setMode("");
             setPaid("");
           }}
-          className="bg-gray-100 rounded-lg text-sm text-gray-600 hover:bg-gray-200"
+          className="rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 transition"
         >
           Reset Filters
         </button>
-      </div>
+      </motion.div>
 
       {/* INTERNSHIP LIST */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         {filtered.length === 0 && (
-          <p className="text-gray-500 col-span-full">
+          <p className="text-gray-500 col-span-full text-center">
             No internships found
           </p>
         )}
@@ -119,19 +127,34 @@ function StudentInternships() {
 /* ---------------- CARD ---------------- */
 
 function InternshipCard({ internship }) {
-  return (
-    <div className="bg-white rounded-xl shadow hover:shadow-lg transition p-6 flex flex-col justify-between">
+  const [applied, setApplied] = useState(false);
 
+  const handleApply = () => {
+    if (applied) return;
+
+    setApplied(true);
+    alert("✅ Applied successfully!");
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.3 }}
+      className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col justify-between border border-gray-100"
+    >
       <div>
         <h3 className="font-semibold text-slate-800 text-lg">
           {internship.title}
         </h3>
 
-        <p className="text-sm text-slate-500 mb-2">
+        <p className="text-sm text-slate-500 mb-3">
           {internship.companyName}
         </p>
 
-        <div className="flex flex-wrap gap-2 text-xs mb-3">
+        <div className="flex flex-wrap gap-2 text-xs mb-4">
           <Tag label={internship.mode} />
           <Tag label={internship.paid ? "Paid" : "Unpaid"} />
           <Tag label={`${internship.durationInMonths} Months`} />
@@ -141,27 +164,32 @@ function InternshipCard({ internship }) {
           {internship.description}
         </p>
 
-        <p className="text-xs text-slate-500 mt-2">
-          Skills: {internship.skills}
+        <p className="text-xs text-slate-500 mt-3">
+          <span className="font-medium">Skills:</span> {internship.skills}
         </p>
       </div>
 
-      <a
-        href={internship.applyLink || "#"}
-        target="_blank"
-        rel="noreferrer"
-        className="mt-4 text-center bg-indigo-600 text-white py-2 rounded-lg text-sm hover:bg-indigo-700"
+      {/* APPLY BUTTON */}
+      <button
+        onClick={handleApply}
+        disabled={applied}
+        className={`mt-6 py-2.5 rounded-xl text-sm font-medium transition
+          ${
+            applied
+              ? "bg-green-100 text-green-700 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
       >
-        Apply Now
-      </a>
-
-    </div>
+        {applied ? "Applied ✓" : "Apply Now"}
+      </button>
+    </motion.div>
   );
 }
 
+
 function Tag({ label }) {
   return (
-    <span className="px-2 py-1 bg-indigo-100 text-indigo-700 rounded-full">
+    <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-medium">
       {label}
     </span>
   );
