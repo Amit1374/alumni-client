@@ -126,7 +126,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/alumni/create-event"
+          element={
+            <ProtectedRoute allowedRole="ALUMNI">
+              <CreateEvent />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/student/internships"
           element={
