@@ -126,6 +126,7 @@ function AlumniDashboard() {
               icon="📅"
               desc="Create and manage alumni events."
               disabled={disabled}
+              onClick={() => navigate('/admin/create-event')}
             />
 
             <FeatureCard
